@@ -1,1 +1,0 @@
-^(?<fn>[A-Z])(?<ln>[A-Z])(?<id>\d+)(?<type>[A-Za-z]+)(?<we>\d{4}-\d{2}-\d{2})\.(?<ext>[a-z]+)$ -- file name with invoice data
