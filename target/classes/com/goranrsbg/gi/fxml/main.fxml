@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane fx:id="mainPane" minHeight="480.0" minWidth="640.0" styleClass="main" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.goranrsbg.gi.controller.MainController"> 
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onQuit" text="Quit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onTest" text="Test" />
+                  <MenuItem mnemonicParsing="false" onAction="#onBankHoliday" text="Bank Holidays" />
+                  <MenuItem mnemonicParsing="false" onAction="#onTitles" text="Titles" />
+                  <MenuItem mnemonicParsing="false" onAction="#onTraining" text="Trainings" />
+                  <MenuItem mnemonicParsing="false" onAction="#onEmail" text="Emails" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <bottom>
+        <AnchorPane styleClass="abot">
+            <children>
+                <HBox spacing="11.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.topAnchor="7.0">
+                    <children>
+                        <Label fx:id="labelTime" minWidth="100.0" />
+                        <Label fx:id="labelLastWE" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" minWidth="100.0" styleClass="we" />
+                    </children>
+                </HBox>
+                <HBox layoutX="200.0" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
+                    <children>
+                        <Label fx:id="labelMessage" minWidth="100.0" />
+                        <Label fx:id="labelTimeON" layoutX="10.0" layoutY="10.0" minWidth="100.0" />
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+    </bottom>
+</BorderPane>

@@ -1,0 +1,4 @@
+--patch-module
+com.goranrsbg.gi=_
+--add-reads
+com.goranrsbg.gi=ALL-UNNAMED

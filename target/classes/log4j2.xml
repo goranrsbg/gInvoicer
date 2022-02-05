@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Appenders>
+<!--    <RollingFile name="File" fileName="logs/logged.log"  filePattern="logs/logged-%d{MM-yyyy}-%i.log">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+       <Policies>
+          <SizeBasedTriggeringPolicy size="997 kB"/>
+       </Policies>
+    </RollingFile>-->
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="Console"/>
+      <!--<AppenderRef ref="File"/>-->
+    </Root>
+    <Logger name="org.hibernate" level="info"/>
+    <Logger name="org.hibernate.SQL" level="debug" />
+    <Logger name="org.hibernate.type.desriptor.sql" level="trace"/>
+    <Logger name="org.hibernate.stat" level="debug"/>
+  </Loggers>
+</Configuration>

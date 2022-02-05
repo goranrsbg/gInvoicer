@@ -1,0 +1,8 @@
+target/
+shade/
+logs/
+patterns.txt
+logged.log
+licenseheader.txt
+nbactions.xml
+nb-configuration.xml

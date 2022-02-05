@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>run</actionName>
+        <goals>
+            <goal>javafx:run</goal>    
+        </goals>
+    </action>
+    <action>
+        <actionName>debug</actionName>
+        <goals>
+            <goal>clean</goal>
+            <goal>javafx:run@debug</goal>
+        </goals>
+        <properties>
+            <jpda.listen>true</jpda.listen>
+        </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-Jfx Run</actionName>
+        <displayName>Jfx Run</displayName>
+        <goals>
+            <goal>javafx:run</goal>    
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-JFX jlink</actionName>
+        <displayName>JFX jlink</displayName>
+        <goals>
+            <goal>javafx:jlink</goal>       
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-JFX Fat Jar</actionName>
+        <displayName>JFX Fat Jar</displayName>
+        <goals>
+            <goal>compile</goal>       
+            <goal>package</goal>       
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-GetSources</actionName>
+        <displayName>GetSources</displayName>
+        <goals>
+            <goal>dependency:sources</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-GetJavadoc</actionName>
+        <displayName>GetJavadoc</displayName>
+        <goals>
+            <goal>dependency:resolve</goal>
+            <goal>-Dclassifier=javadoc</goal>
+        </goals>
+    </action>
+</actions>
