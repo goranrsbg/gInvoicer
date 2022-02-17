@@ -1,6 +1,5 @@
 package com.goranrsbg.gi.database.entity.embedable;
 
-import com.goranrsbg.gi.etc.Functions;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -43,7 +42,7 @@ public class PersonName {
      * @return name surname string
      */
     public String toShortString() {
-        return String.format("%s %s", firstName, Functions.get().fistLetterName(lastName));
+        return String.format("%s %c.", firstName, lastName.charAt(0));
     }
 
     /**

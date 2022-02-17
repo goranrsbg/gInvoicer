@@ -6,7 +6,7 @@ package com.goranrsbg.gi.etc;
  */
 public class SharedData {
 
-    private static SharedData INSTANCE;
+    private static final SharedData INSTANCE = new SharedData();
 
     /**
      * Time app started in milliseconds.
@@ -18,9 +18,6 @@ public class SharedData {
     }
 
     public static SharedData get() {
-        if (INSTANCE == null) {
-            INSTANCE = new SharedData();
-        }
         return INSTANCE;
     }
 

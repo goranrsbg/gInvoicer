@@ -17,7 +17,7 @@ import javax.persistence.Version;
  * @author Goran Cvijanovic
  */
 @Entity
-@NamedQuery(name = "Training.all", query = "SELECT t FROM Training t")
+@NamedQuery(name = "Training.all", query = "SELECT t FROM Training t ORDER BY name")
 public class Training {
 
     @Id

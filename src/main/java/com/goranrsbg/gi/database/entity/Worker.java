@@ -26,7 +26,7 @@ import javax.persistence.Version;
  */
 @Entity
 @SequenceGenerator(name = "id_generator", sequenceName = "id_seqence", allocationSize = 17)
-@NamedQuery(name = "Worker.all", query = "SELECT w FROM Worker w")
+@NamedQuery(name = "Worker.all", query = "SELECT w FROM Worker w ORDER BY first_name")
 public class Worker {
 
     @Id

@@ -4,6 +4,7 @@ import com.goranrsbg.gi.database.dao.DAObankHoliday;
 import com.goranrsbg.gi.database.entity.BankHoliday;
 import com.goranrsbg.gi.etc.Formats;
 import com.goranrsbg.gi.etc.Functions;
+import com.goranrsbg.gi.etc.UserNodeException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -45,7 +46,9 @@ public class BankHolidayController {
     private List<BankHoliday> data;
 
     public void initialize() {
-        //init message Timeline, clear after timeout.
+        // texts
+        nameText.setUserData("Bank Holiday Name");
+        // init message Timeline, clear after timeout.
         messageClearTimeline = new Timeline(new KeyFrame(Duration.seconds(11d), e -> {
         }));
         messageClearTimeline.setOnFinished(e -> {
@@ -101,7 +104,7 @@ public class BankHolidayController {
                 }
             };
         });
-        // init selected item
+        // init data
         data = DAObankHoliday.get().readAll();
         pushEmptyItem();
         updateComboData();
@@ -139,12 +142,11 @@ public class BankHolidayController {
                 itemsCombo.getSelectionModel().select(merged);
                 showMessage(String.format("Updated. %s to %s.", old.toShortString(), merged.toShortString()));
             }
-
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
+            itemsCombo.requestFocus();
+        } catch (UserNodeException e) {
             showMessage(e.getMessage());
+            e.getNode().requestFocus();
         }
-        itemsCombo.requestFocus();
     }
 
     @FXML
@@ -223,11 +225,11 @@ public class BankHolidayController {
      *
      * @throws Exception New exception with message about not valid value.
      */
-    private BankHoliday validate(BankHoliday bh) throws Exception {
-        String name = Functions.get().validateTextLength(nameText.getText(), "Name", 2);
+    private BankHoliday validate(BankHoliday bh) throws UserNodeException {
+        String name = Functions.get().validateShort(nameText);
         LocalDate date = datePicker.getValue();
         if (date == null) {
-            throw new Exception("Date must be picked.");
+            throw new UserNodeException("Date must be picked.", datePicker);
         }
         BankHoliday old = new BankHoliday(bh);
         bh.setName(name);

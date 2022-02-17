@@ -3,6 +3,7 @@ package com.goranrsbg.gi.controller;
 import com.goranrsbg.gi.database.dao.DAOtraning;
 import com.goranrsbg.gi.database.entity.Training;
 import com.goranrsbg.gi.etc.Functions;
+import com.goranrsbg.gi.etc.UserNodeException;
 import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -39,6 +40,9 @@ public class TrainingController {
     private List<Training> data;
 
     public void initialize() {
+        // texts
+        trainingNameText.setUserData("Training Name");
+        trainingDescriptionText.setUserData("Training Description");
         // message timeline
         messageClearTimeline = new Timeline(new KeyFrame(Duration.seconds(11d), e -> {
         }));
@@ -96,10 +100,11 @@ public class TrainingController {
                 itemsCombo.getSelectionModel().select(merged);
                 showMessage(String.format("Updated. %s to %s.", old.toShortString(), merged.toShortString()));
             }
-        } catch (Exception e) {
+            itemsCombo.requestFocus();
+        } catch (UserNodeException e) {
             showMessage(e.getMessage());
+            e.getNode().requestFocus();
         }
-        itemsCombo.requestFocus();
     }
 
     @FXML
@@ -164,9 +169,9 @@ public class TrainingController {
         data.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
     }
 
-    private Training validate(Training training) throws Exception {
-        String name = Functions.get().validateTextLength(trainingNameText.getText(), "Name", 1);
-        String descripton = Functions.get().validateTextLength(trainingDescriptionText.getText(), "Description", 2);
+    private Training validate(Training training) throws UserNodeException {
+        String name = Functions.get().validateShort(trainingNameText);
+        String descripton = Functions.get().validateLong(trainingDescriptionText);
         Training old = new Training(training);
         training.setName(name);
         training.setDescription(descripton);

@@ -11,16 +11,16 @@ import org.hibernate.SessionFactory;
  *
  * @author goranrsbg
  */
-public class DAOEmail {
+public class DAOemail {
 
-    private static final DAOEmail INSTANCE = new DAOEmail();
+    private static final DAOemail INSTANCE = new DAOemail();
 
     private static final SessionFactory SF = DBFactory.getSessionFactory();
 
-    private DAOEmail() {
+    private DAOemail() {
     }
 
-    public static DAOEmail get() {
+    public static DAOemail get() {
         return INSTANCE;
     }
 

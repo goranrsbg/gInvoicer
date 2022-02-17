@@ -1,6 +1,6 @@
 package com.goranrsbg.gi.controller;
 
-import com.goranrsbg.gi.database.dao.DAOEmail;
+import com.goranrsbg.gi.database.dao.DAOemail;
 import com.goranrsbg.gi.database.entity.Email;
 import com.goranrsbg.gi.etc.Functions;
 import java.util.List;
@@ -76,7 +76,7 @@ public class EmailController {
             updateButtons();
         });
         // collect and show
-        data = DAOEmail.get().readAll();
+        data = DAOemail.get().readAll();
         pushEmptyItem();
         updateComboData();
         itemsCombo.getSelectionModel().selectFirst();
@@ -90,14 +90,14 @@ public class EmailController {
         try {
             Email old = validate(email);
             if (isSave) {
-                DAOEmail.get().save(email);
+                DAOemail.get().save(email);
                 pushEmptyItem();
                 sortData();
                 updateComboData();
                 itemsCombo.getSelectionModel().selectFirst();
                 showMessage("Saved. " + email.toShortString());
             } else {
-                Email merged = DAOEmail.get().update(email);
+                Email merged = DAOemail.get().update(email);
                 data.set(index, merged);
                 sortData();
                 updateComboData();
@@ -125,7 +125,7 @@ public class EmailController {
         }
         if (Functions.get().isConfirmed("Delete Warning", "Item < " + email.toShortString() + " > will be deleted.\nAre you sure?")) {
             try {
-                DAOEmail.get().delete(email);
+                DAOemail.get().delete(email);
                 showMessage("Deleted. " + email.toShortString());
                 data.remove(index);
                 updateComboData();
@@ -183,11 +183,11 @@ public class EmailController {
 
     private Email validate(Email email) throws Exception {
         final Email old = new Email(email);
-        String descripton = Functions.get().validateTextLength(descriptionText.getText(), "Description", 1);
-        String emailString = Functions.get().validateTextLength(emailText.getText(), "Email", 1);
-        String password = Functions.get().validateTextLength(passwordText.getText(), "Password", 1);
-        String outServer = Functions.get().validateTextLength(outgoingServerText.getText(), "Outgong server", 1);
-        int port = Integer.parseInt(portText.getText());
+        String descripton = Functions.get().validateShort(descriptionText);
+        String emailString = Functions.get().validateEmail(emailText);
+        String password = Functions.get().validateShort(passwordText);
+        String outServer = Functions.get().validateLong(outgoingServerText);
+        int port = Functions.get().validateNumber(portText);
         email.setDescription(descripton);
         email.setEmail(emailString);
         email.setPassword(password);

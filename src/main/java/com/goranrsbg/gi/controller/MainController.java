@@ -69,7 +69,12 @@ public class MainController {
 
     @FXML
     private void onTest(ActionEvent event) {
-
+        try {
+            View<WorkerController> node = ViewManager.load(ViewManager.FXML_WORKER);
+            loadSubview(node.getNode(), "Worker");
+        } catch (IOException ex) {
+            LOGGER.error("Template fxml not loaded." + ex.getMessage());
+        }
     }
 
     @FXML

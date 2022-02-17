@@ -20,6 +20,9 @@ public class ViewManager {
     public static final String FXML_TITLE = "title";
     public static final String FXML_TRAINING = "training";
     public static final String FXML_EMAIL = "email";
+    public static final String FXML_WORKER = "worker";
+    public static final String FXML_PERSON_NAME = "personName";
+    public static final String FXML_ADDRESS = "address";
 
     private ViewManager() {
     }

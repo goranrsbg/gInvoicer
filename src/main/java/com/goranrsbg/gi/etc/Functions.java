@@ -3,9 +3,11 @@ package com.goranrsbg.gi.etc;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,11 +21,24 @@ public class Functions {
 
     private static final Functions INSTANCE = new Functions();
 
+    private Pattern ptLetNum;
+    private Pattern ptLetters;
+    private Pattern ptEmail;
+    private Pattern ptNumber;
+
     private final long HOUR = 3600000L;
     private final long MINUT = 60000L;
     private final long SECOND = 1000L;
 
     private Functions() {
+        initPatterns();
+    }
+
+    private void initPatterns() {
+        ptLetNum = Pattern.compile("[\\p{L} 0-9\\.@!#$%&'*+/= ?^_`{|}~-]+");
+        ptLetters = Pattern.compile("[\\p{L}\\.@!#$%&'*+/= ?^_`{|}~-]+");
+        ptEmail = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+        ptNumber = Pattern.compile("\\d+\\.?\\d*");
     }
 
     public static Functions get() {
@@ -31,29 +46,123 @@ public class Functions {
     }
 
     /**
-     * Validates text against null and passed minimum length value.True if text
-     * is valid.<p>
-     * null -> false
-     * text.length >= length -> true
+     * Validates text size of minimum one character.
      *
-     * @param text   text to be validateTextLength
-     * @param name   Name of the given string
-     * @param length min length for given string
+     * @param textField node to be validate.
      *
-     * @return true text is valid
-     *         false text is not valid
+     * @return text from textField
      *
-     * @throws java.lang.Exception
+     * @throws com.goranrsbg.gi.etc.UserNodeException
+     *
      */
-    public String validateTextLength(String text, String name, int length) throws Exception {
-        if (text == null) {
-            throw new Exception(name + " can not be empty.");
+    public String validateShort(TextField textField) throws UserNodeException {
+        return validateSize(textField, 1);
+    }
+
+    /**
+     * Validates text size of minimum two characters.
+     *
+     * @param textField
+     *
+     * @return trimmed text
+     *
+     * @throws com.goranrsbg.gi.etc.UserNodeException
+     *
+     */
+    public String validateLong(TextField textField) throws UserNodeException {
+        return validateSize(textField, 2);
+    }
+
+    /**
+     * Validate text of <code>textfield</code>
+     *
+     * @param textField node to be validate.
+     * @param size      minimum size for text.
+     *
+     * @return text from <code>textfield</code>.
+     *
+     * @throws UserNodeException
+     */
+    public String validateSize(TextField textField, int size) throws UserNodeException {
+        String text = validateBasic(textField);
+        String name = (String) textField.getUserData();
+        if (!ptLetters.matcher(text).matches()) {
+            throw new UserNodeException(String.format("%s have illegal letters.", name), textField);
         }
-        String theText = text.trim();
-        if (theText.length() < length) {
-            throw new Exception(String.format("%s must have minimum length of %d", name, length));
+        if (text.length() < size) {
+            throw new UserNodeException(String.format("%s doesn't have minimum length of %d.", name, size), textField);
         }
-        return theText;
+        return text;
+    }
+
+    /**
+     * Validates text against null and email pattern.True if text
+     * is valid.<p>
+     * <b>Pattern:</b>
+     * <code>[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?</code>
+     *
+     * @param textField node to be validate.
+     *
+     * @return trimmed text
+     *
+     * @throws com.goranrsbg.gi.etc.UserNodeException
+     *
+     */
+    public String validateEmail(TextField textField) throws UserNodeException {
+        String text = validateBasic(textField);
+        if (!ptEmail.matcher(text).matches()) {
+            throw new UserNodeException(String.format("%s is not valid email.", text), textField);
+        }
+        return text;
+    }
+
+    /**
+     * Validates text against null and is number pattern.True if text
+     * is valid.<p>
+     * <p>
+     * <b>Pattern:</b><code>\\d+\\.?\\d*</code>
+     *
+     * @param textField
+     *
+     * @return number from text.
+     *
+     * @throws com.goranrsbg.gi.etc.UserNodeException
+     *
+     */
+    public int validateNumber(TextField textField) throws UserNodeException {
+        String text = validateBasic(textField);
+        String name = (String) textField.getUserData();
+        if (!ptNumber.matcher(text).matches()) {
+            throw new UserNodeException(String.format("%s is not number of %s.", text, name), textField);
+        }
+        return Integer.parseInt(text);
+    }
+
+    public String validateLetNum(TextField textField) throws UserNodeException {
+        String text = validateBasic(textField);
+        String name = (String) textField.getUserData();
+        if (!ptLetNum.matcher(text).matches()) {
+            throw new UserNodeException(String.format("%s is not format of %s.", text, name), textField);
+        }
+        return text;
+    }
+
+    /**
+     * Validate if text of <code>textfield</code> is null or size is 0.
+     *
+     * @param textField
+     *
+     * @return
+     *
+     * @throws UserNodeException
+     */
+    private String validateBasic(TextField textField) throws UserNodeException {
+        String text = textField.getText();
+        String name = (String) textField.getUserData();
+        if (text == null || text.trim().isEmpty()) {
+            throw new UserNodeException(String.format("%s can not be empty.", name), textField);
+        }
+        return text.trim();
     }
 
     /**
@@ -81,20 +190,8 @@ public class Functions {
     }
 
     /**
-     * Transforms the name into the name first letter plus dot.
-     * <code>Goran -> G.</code>
-     *
-     * @param name First or Last name to be shortened.
-     *
-     * @return Shortened name.
-     */
-    public String fistLetterName(String name) {
-        return name.charAt(0) + ".";
-    }
-
-    /**
-     * Creates alert with given title and text and
-     * wait for user response.
+     * Creates alert with given title and text then
+     * wait and validate user response.
      *
      * @param title of alert
      * @param text  of alert
@@ -121,4 +218,5 @@ public class Functions {
         // long seconds = dif % HOUR / SECOND;
         return String.format("%02d:%02d", hours, minutes);
     }
+
 }

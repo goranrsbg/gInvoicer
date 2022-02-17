@@ -6,3 +6,4 @@ logged.log
 licenseheader.txt
 nbactions.xml
 nb-configuration.xml
+.gitignore

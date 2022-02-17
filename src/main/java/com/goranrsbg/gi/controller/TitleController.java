@@ -3,6 +3,7 @@ package com.goranrsbg.gi.controller;
 import com.goranrsbg.gi.database.dao.DAOtitle;
 import com.goranrsbg.gi.database.entity.Title;
 import com.goranrsbg.gi.etc.Functions;
+import com.goranrsbg.gi.etc.UserNodeException;
 import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -39,6 +40,9 @@ public class TitleController {
     private List<Title> data;
 
     public void initialize() {
+        // texts
+        titleShortText.setUserData("Short Title");
+        titleLongText.setUserData("Long Title");
         //init message Timeline, clear after timeout.
         messageClearTimeline = new Timeline(new KeyFrame(Duration.seconds(11d), e -> {
         }));
@@ -96,10 +100,11 @@ public class TitleController {
                 itemsCombo.getSelectionModel().select(merged);
                 showMessage(String.format("Updated. %s to %s", old.toShortString(), merged.toShortString()));
             }
-        } catch (Exception e) {
+            itemsCombo.requestFocus();
+        } catch (UserNodeException e) {
             showMessage(e.getMessage());
+            e.getNode().requestFocus();
         }
-        itemsCombo.requestFocus();
     }
 
     @FXML
@@ -135,9 +140,9 @@ public class TitleController {
         messageLabel.getScene().getWindow().hide();
     }
 
-    private Title validate(Title title) throws Exception {
-        String titleShort = Functions.get().validateTextLength(titleShortText.getText(), "Title", 1);
-        String titleLong = Functions.get().validateTextLength(titleLongText.getText(), "Title long", 2);
+    private Title validate(Title title) throws UserNodeException {
+        String titleShort = Functions.get().validateShort(titleShortText);
+        String titleLong = Functions.get().validateShort(titleLongText);
         final Title old = new Title(title);
         title.setName(titleLong);
         title.setShortName(titleShort);
